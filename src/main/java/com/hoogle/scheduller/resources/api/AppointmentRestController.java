@@ -1,8 +1,10 @@
 package com.hoogle.scheduller.resources.api;
 
-import com.hoogle.scheduller.model.Appointment;
+import com.hoogle.scheduller.domain.dto.NewAppointmentDto;
+import com.hoogle.scheduller.domain.model.Appointment;
 import com.hoogle.scheduller.service.AppointmentService;
 import com.hoogle.scheduller.service.exceptions.InvalidMomentToScheduleException;
+import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +22,10 @@ public class AppointmentRestController {
     private AppointmentService appointmentService;
 
     @GetMapping
-    public ResponseEntity<List<Appointment>> getAllAppointments() {
-        var appointments = appointmentService.getAll();
+    public ResponseEntity<List<?>> getAllAppointments(
+            @RequestParam(defaultValue = "true") boolean shortMode
+    ) {
+        var appointments = appointmentService.getAll(shortMode);
         return ResponseEntity.ok(appointments);
     }
 
@@ -32,9 +36,11 @@ public class AppointmentRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerAppointment(@RequestBody Appointment appointment) {
+    public ResponseEntity<?> registerAppointment(
+            @Valid @RequestBody NewAppointmentDto newAppointment
+    ) {
         try {
-            var appointmentSchedule = appointmentService.register(appointment);
+            var appointmentSchedule = appointmentService.register(newAppointment);
             return ResponseEntity.ok(appointmentSchedule);
         } catch (InvalidMomentToScheduleException exception) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
@@ -42,7 +48,3 @@ public class AppointmentRestController {
 
     }
 }
-
-// classe objeto interface método atributo construtor
-// herança, poliformismo(*), composição
-// listas, streams, programação funcional
