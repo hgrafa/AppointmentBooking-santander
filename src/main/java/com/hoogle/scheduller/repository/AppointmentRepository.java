@@ -1,6 +1,6 @@
 package com.hoogle.scheduller.repository;
 
-import com.hoogle.scheduller.model.Appointment;
+import com.hoogle.scheduller.domain.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
