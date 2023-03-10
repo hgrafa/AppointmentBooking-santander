@@ -1,6 +1,6 @@
-package com.hoogle.scheduller.model;
+package com.hoogle.scheduller.domain.model;
 
-import com.hoogle.scheduller.model.enums.Priority;
+import com.hoogle.scheduller.domain.enums.Priority;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +20,9 @@ public class Appointment {
     private Priority priority;
     private LocalDateTime start;
     private LocalDateTime finish;
+    public boolean hasFinished() {
+        return LocalDateTime.now().isAfter(finish);
+    }
 
     // private Student student;
 
